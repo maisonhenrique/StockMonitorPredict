@@ -14,7 +14,7 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 st.set_page_config(layout='wide')
 
 # Base de Dados
-df_acoes = pd.read_csv('StockMonitorPredict/base_dados.csv')
+df_acoes = pd.read_csv('base_dados.csv')
 
 # Ajustar data
 date_start = datetime.today() - timedelta(days=30)
@@ -78,7 +78,7 @@ def predict(df):
     y_test = np.array(y_test)
 
     #Loading Model
-    model = load_model('StockMonitorPredict/model_app.h5')
+    model = load_model('model_app.h5')
 
     # Fazendo a previsão
     predict = model.predict(X_test)
@@ -103,7 +103,7 @@ def predict_10days(df):
     train_data_norm = scaler.fit_transform(np.array(train_data).reshape(-1,1))
     test_data_norm = scaler.transform(np.array(input_data).reshape(-1,1))
 
-    model = load_model('StockMonitorPredict/model_app.h5')
+    model = load_model('model_app.h5')
 
     lenght_test = len(test_data_norm)
 
