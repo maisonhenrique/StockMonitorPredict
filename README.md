@@ -1,2 +1,2 @@
-# Stock Monitor - Previsão de Preços
+# Stock Monitor Predict
 

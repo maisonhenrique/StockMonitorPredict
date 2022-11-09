@@ -1,5 +1,9 @@
-# Stock Monitor Predict
-
-
-
-
+numpy
+pandas
+yfinance
+keras
+plotly
+sklearn
+keras
+seaborn
+streamlit
