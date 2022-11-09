@@ -4,6 +4,5 @@ yfinance
 keras
 plotly
 scikit_learn
-keras
 seaborn
 streamlit
