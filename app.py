@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import yfinance as yf
+import tensorflow
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
