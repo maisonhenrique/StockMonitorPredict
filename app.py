@@ -20,7 +20,7 @@ df_acoes = pd.read_csv('base_dados.csv')
 date_start = datetime.today() - timedelta(days=30)
 date_end = datetime.today()
 
-intervals = ['5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
+intervals = ['1d', '5d', '1wk', '1mo', '3mo']
 
 def format_date(dt, format='%Y-%m-%d'):
     return dt.strftime(format)
