@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import yfinance as yf
+from yahooquery import Ticker
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
@@ -39,7 +40,7 @@ stock_select = st.sidebar.selectbox("Selecione o ativo:", acao)
 from_date = st.sidebar.date_input('De:', date_start)
 to_date = st.sidebar.date_input('Para:', date_end)
 interval_select = st.sidebar.selectbox("Selecione o intervalo:", intervals)
-carregar_dados = st.sidebar.checkbox('Carregar dados')
+carregar_dados = st.sidebar.checkbox('Carregar Dados')
 
 grafico_candle = st.empty()
 grafico_line = st.empty()
@@ -158,7 +159,7 @@ def predict_10days(df):
 # Configuração titulo
 st.title(f'Stock Monitor - {stock_select}')
 
-tab1, tab2 = st.tabs(['📈 Gráfico', '🗃 Dados Históricos'])
+tab1, tab2, tab3 = st.tabs(['📈 Gráfico', '🗃 Dados Históricos', '📑 Demonstração de Resultados'])
 
 # Gráfico de CandleStick
 def plotCandleStick(df):
@@ -190,6 +191,15 @@ def moving_avarage(df):
     MA200 = df.Close.rolling(200).mean()
     return MA7, MA21, MA50, MA100, MA200
 
+# Dados Financeiros
+def dadosfinanceiros():
+    df_dados = Ticker(stock_select)
+    df_dados = df_dados.income_statement()
+    df_dados = df_dados.transpose()  
+    df_dados.columns = df_dados.iloc[0,:]
+    df_dados = df_dados.iloc[2:,1:]
+    return (df_dados)
+
 # Visualização
 def main():
     if from_date > to_date:
@@ -219,10 +229,10 @@ def main():
             st.subheader('Preço de Fechamento')
             fig2 = plotGraficoLinha(df)
             if st.checkbox('Previsão'):
-                st.write('''Para as previsões dos preços foi utilizado um modelo de Rede Neural Recorrente, a LSTM que é o processamento de dados em camadas. 
+                st.write('''Para as previsões dos preços foi utilizado um modelo LSTM que é o processamento de dados em camadas. 
                 Conforme Aurélien Géron, uma célula LSTM pode aprender a reconhecer uma entrada importante (input gate), armazená-la no estado de longo prazo, 
                 aprender a preservá-la pelo tempo necessário (forget gate) e aprender a extraí-la sempre que for preciso.
-                Todas as informações sobre o modelo estão disponíveis no meu [GitHub](https://github.com/maisonhenrique).''')
+                Todas as informações sobre o modelo estão disponíveis no [GitHub](https://github.com/maisonhenrique/portifolio/tree/main/Stock_Monitor_Predict).''')
                 st.write('\n\n')
                 col1, col2 = st.columns(2)
                 with col1:
@@ -236,7 +246,11 @@ def main():
             st.plotly_chart(fig2, use_container_width=True)
             # Dados Históricos
             with tab2:
-                st.dataframe(df)
+                st.dataframe(df, use_container_width=True)
+            
+            with tab3:
+                df_dados = dadosfinanceiros()
+                st.dataframe(df_dados, use_container_width=True)
 
             # Rodapé
             st.caption('''<h4 style='text-align: center' >Este projeto foi elaborado somente para fins de estudos e não para recomendar ações. 
@@ -250,5 +264,3 @@ def main():
         except Exception as e:
             st.error(e)
 main()
-
-

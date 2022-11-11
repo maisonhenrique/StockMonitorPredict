@@ -1,6 +1,7 @@
 numpy
 pandas
 yfinance
+yahooquery
 tensorflow
 keras
 plotly
